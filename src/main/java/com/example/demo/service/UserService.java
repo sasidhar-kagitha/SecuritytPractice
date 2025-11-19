@@ -40,7 +40,7 @@ public class UserService implements UserRepository {
             if (existingUser == null)
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
             if (!bcrypt.matches(user.getPassword(), existingUser.getPassword()))
-                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid password");
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Invalid password");
             return jwt.generateToken(user.getName(),existingUser.getAuthorities());
         } catch (Exception e) {
             throw new RuntimeException(e);

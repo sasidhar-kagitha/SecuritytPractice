@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.User;
@@ -16,6 +17,7 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 public class SecurityConfig{
 
 
@@ -30,8 +32,9 @@ public class SecurityConfig{
         http.headers(headers -> headers.frameOptions(frame -> frame.disable()));
         http.authenticationProvider(new TestAuthenticationProvider());
         http.authorizeHttpRequests(authorize->authorize.requestMatchers("/auth/user","/auth/signup","/auth/login","/h2-console/**").permitAll()
-                .requestMatchers("/robot").hasRole("ADMIN")
+              //  .requestMatchers("/robot").hasRole("ADMIN")
         .anyRequest().authenticated());
+       http.oauth2Login(auth->auth.defaultSuccessUrl("/private"));
 
         return http.build();
     }
