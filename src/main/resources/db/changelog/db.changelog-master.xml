@@ -1,0 +1,43 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.17.xsd">
+
+    <changeSet id="1" author="sasi">
+        <createTable tableName="students">
+            <column name="id"  type="int" autoIncrement="true"/>
+            <column name="name" type="varchar(30)"  >
+                <constraints unique="true" />
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2" author="sasi">
+        <insert tableName="students">
+            <column name="name" value="raju" />
+        </insert>
+    </changeSet>
+
+    <changeSet id="3" author="sasi">
+        <insert tableName="students">
+            <column name="name" value="maharshi"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="4" author="rakesh">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="users" />
+            </not>
+
+        </preConditions>
+
+    </changeSet>
+    <changeSet id="5" author="rakesh">
+        <insert tableName="students">
+            <column name="name" value="ramesh" />
+        </insert>
+
+    </changeSet>
+
+</databaseChangeLog>
