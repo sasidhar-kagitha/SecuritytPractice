@@ -10,6 +10,7 @@ import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -55,8 +56,17 @@ public class JwtFilter extends OncePerRequestFilter {
             if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                 UserDetails userDet = userDetSer.loadUserByUsername(username);
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDet, null, userDet.getAuthorities());
-                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-                filterChain.doFilter(request, response);
+                SecurityContext context = SecurityContextHolder.createEmptyContext();
+                context.setAuthentication(authenticationToken);
+              //  SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                SecurityContextHolder.setContext(context);
+                //filterChain.doFilter(request, response);
+                Runnable r=()->System.out.println(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+                Thread t=new Thread(r);
+                t.start();
+                t.join();
+                System.out.println(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+
             }
 
             filterChain.doFilter(request, response);
