@@ -31,8 +31,8 @@ public class SecurityConfig{
         http.csrf(csrf->csrf.disable());
         http.headers(headers -> headers.frameOptions(frame -> frame.disable()));
         http.authenticationProvider(new TestAuthenticationProvider());
-        http.authorizeHttpRequests(authorize->authorize.requestMatchers("/auth/user","/auth/signup","/auth/login","/h2-console/**").permitAll()
-              //  .requestMatchers("/robot").hasRole("ADMIN")
+        http.authorizeHttpRequests(authorize->authorize.requestMatchers("/auth/user","/auth/signup","/auth/upload","/auth/login","/h2-console/**").permitAll()
+              //.requestMatchers("/robot").access(a)
         .anyRequest().authenticated());
        http.oauth2Login(auth->auth.defaultSuccessUrl("/private"));
 
